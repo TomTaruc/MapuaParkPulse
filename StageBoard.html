@@ -30,15 +30,36 @@ header h1{font-size:23px;line-height:1.15;letter-spacing:-.035em;margin:0}header
 #board-run{background:#c8102e;color:#fff;border-color:#c8102e}
 #info .launch{background:#c8102e;color:#fff}
 @media(max-width:700px){.live-toolbar{height:auto;min-height:70px;padding:9px}.live-toolbar .live-sub{display:none}.live-toolbar button{padding:8px 10px}#liveFrame{height:calc(100vh - 70px)}}
+
+/* Preserve original canvas, screenshots, connector logic and V6 presentation controls. */
+html,body{height:100%;min-height:100%}
+body{min-height:100dvh;display:flex;flex-direction:column}
+header{height:auto;min-height:0;flex:0 0 auto;display:flex;flex-direction:column;align-items:stretch;gap:13px;padding:16px max(22px,calc((100vw - 1440px)/2))}
+.legacy-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;width:100%}
+.legacy-heading .logo{font-size:20px;letter-spacing:-.045em}
+.legacy-title{margin-right:auto;border-left:1px solid #ddd;padding-left:22px}
+.legacy-title h1{font-size:21px}
+.legacy-title p{margin:4px 0 0;line-height:1.45}
+.legacy-links{margin-left:auto;display:flex;gap:9px;align-items:center}
+.legacy-links a{display:inline-flex;min-height:38px;align-items:center;justify-content:center;border-radius:6px;padding:8px 12px;color:#222;text-decoration:none;font-weight:750;font-size:13px}
+.legacy-links a:hover,.legacy-links a:focus-visible{background:#f6f6f6}
+.controls{justify-content:flex-end;width:100%}
+.controls .legend{margin-right:auto;white-space:normal}
+#viewport{height:auto;flex:1 1 auto;min-height:350px}
+#info{position:fixed;top:155px;max-height:calc(100dvh - 205px);overflow:auto}
+.legacy-footer{background:#fff;border-top:1px solid #dadde0;text-align:center;display:flex;align-items:center;justify-content:center;min-height:55px;padding:18px 24px;color:#62666b;font-size:12px;line-height:1.5;flex:0 0 auto}
+.legacy-footer strong{font-weight:650;color:#242424}
+@media(max-width:1100px){header{height:auto;min-height:0;align-items:stretch;flex-wrap:nowrap;padding:14px 17px}#viewport{height:auto}.controls{justify-content:flex-start}.controls .legend{width:100%;margin-right:0}#info{top:190px}}
+@media(max-width:700px){.legacy-heading{gap:10px;align-items:flex-start}.legacy-heading .logo{font-size:18px}.legacy-title{padding-left:10px}.legacy-title h1{font-size:17px}.legacy-title p{font-size:10px}.legacy-links{gap:2px}.legacy-links a{font-size:11px;padding:6px}.controls{gap:6px}.controls .legend{font-size:11px;flex-wrap:wrap}#viewport{min-height:320px}#info{top:15%;width:min(300px,calc(100vw - 24px));max-height:70vh}.legacy-footer{font-size:11px;padding:13px 12px}}
 </style></head><body>
-<header><div><div class="logo">Mapúa<b>ParkPulse</b></div><h1>V6 · Screens &amp; connections</h1><p>Exact screenshots captured from the original V6 HTML · navigation and shared-state flows documented separately</p></div>
+<header><div class="legacy-heading"><div class="logo">Mapúa<b>ParkPulse</b></div><div class="legacy-title"><h1>Original Screen Board</h1><p>Preserved presentation artwork · 18 screen captures and 26 arrows</p></div><nav class="legacy-links" aria-label="Main navigation"><a href="/">Home</a><a href="/flowboard">Flow Board</a></nav></div>
 <div class="controls"><div class="legend"><span><i class="mark nav"></i>Navigation</span><span><i class="mark sync"></i>Live data update</span><span><i class="mark admin"></i>Admin sections</span></div>
 <button class="active" aria-pressed="true" id="toggle-navigation" onclick="filterClick('navigation')">Navigation links</button><button id="toggle-admin" aria-pressed="true" class="active" onclick="filterClick('admin')">Admin sections</button><button class="active" aria-pressed="true" id="toggle-sync" onclick="filterClick('sync')">Shared updates</button>
 <button title="Zoom out" onclick="zoomTo(zoom/.85)">−</button><button id="zlabel" title="Reset view" onclick="fit()">50%</button><button title="Zoom in" onclick="zoomTo(zoom*1.15)">+</button><button class="primary" onclick="fit()">Fit all</button><button id="board-run" onclick="openLive('student')">▶ Run live V6</button></div></header>
 <div id="viewport"><div id="stage"><div class="lane" style="top:72px;height:382px"><span class="lane-header">STUDENT <small>Student-only login → live availability and basement map</small></span></div>
 <div class="lane" style="top:563px;height:765px"><span class="lane-header">STAFF / GUARD <small>Authentication → observed space update, congestion and discrepancy reporting</small></span></div>
 <div class="lane" style="top:1399px;height:1225px"><span class="lane-header">ADMINISTRATOR <small>Monitoring, verification, analytics, reports, settings and guard management</small></span></div><svg id="links" viewBox="0 0 2480 2730" aria-label="Connection arrows between all screens"></svg></div><div id="hint">Drag to pan · Scroll to zoom · Click a screen to inspect arrows · Use Run to open the working V6 prototype here</div></div>
-<aside id="info"><button id="closeInfo" aria-label="Close details" onclick="closeInfo()">×</button><div id="infoBody"></div></aside>
+<footer class="legacy-footer"><strong>Created by Group TTLDLR: Taruc, Tan, Laguador, Dalog, Lozano, Ruanes - IE103-2-AC2</strong></footer><aside id="info"><button id="closeInfo" aria-label="Close details" onclick="closeInfo()">×</button><div id="infoBody"></div></aside>
 <div id="lightbox" role="dialog" aria-modal="true" aria-label="Exact source screenshot"><div class="light-inner"><div class="light-top"><span id="lightTitle">Screen preview</span><button onclick="closeScreen()">Close</button></div><div class="light-img"><img id="lightImage" alt="Actual V6 screen capture"></div></div></div>
 
 <div id="livePrototype" role="dialog" aria-modal="true" aria-label="Working ParkPulse V6 prototype">
