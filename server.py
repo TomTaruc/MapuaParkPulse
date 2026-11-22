@@ -156,7 +156,23 @@ class Handler(BaseHTTPRequestHandler):
         return a if a['role'] in roles else None
     def do_GET(self):
         path=urlsplit(self.path).path
-        if path in ('/', '/StageBoard.html', '/board'):
+        if path in ('/', '/portal', '/portal.html'):
+            raw=(ROOT/'portal.html').read_bytes()
+            self.send_response(200)
+            self.send_header('Content-Type','text/html; charset=utf-8')
+            self.send_header('Cache-Control','no-store')
+            self.send_header('X-Content-Type-Options','nosniff')
+            self.send_header('Content-Length',str(len(raw)))
+            self.end_headers();self.wfile.write(raw);return
+        if path in ('/flowboard', '/FlowBoard.html'):
+            raw=(ROOT/'FlowBoard.html').read_bytes()
+            self.send_response(200)
+            self.send_header('Content-Type','text/html; charset=utf-8')
+            self.send_header('Cache-Control','no-store')
+            self.send_header('X-Content-Type-Options','nosniff')
+            self.send_header('Content-Length',str(len(raw)))
+            self.end_headers();self.wfile.write(raw);return
+        if path in ('/StageBoard.html', '/board', '/legacy-board'):
             raw=(ROOT/'StageBoard.html').read_bytes()
             self.send_response(200)
             self.send_header('Content-Type','text/html; charset=utf-8')
