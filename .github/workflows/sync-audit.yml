@@ -1,0 +1,31 @@
+name: ParkPulse synchronization audit
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check Python source syntax
+        run: python -m py_compile server.py
+      - name: Check embedded JavaScript syntax
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          for(const file of ['index.html','FlowBoard.html','StageBoard.html']){
+            const page=fs.readFileSync(file,'utf8');
+            const scripts=[...page.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
+            if(!scripts.length)throw Error('Missing script: '+file);
+            for(const match of scripts)new vm.Script(match[1],{filename:file});
+            console.log('JavaScript parsed:',file);
+          }
+          NODE
+      - name: Verify shared occupancy records and Flowboard links
+        run: python -m unittest discover -s tests -v
