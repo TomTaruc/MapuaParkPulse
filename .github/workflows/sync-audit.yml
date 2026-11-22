@@ -29,3 +29,18 @@ jobs:
           NODE
       - name: Verify shared occupancy records and Flowboard links
         run: python -m unittest discover -s tests -v
+      - name: Install browser test runtime
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Test actual role-screen updates and homepage Flowboard preview
+        run: node tests/browser_smoke.js
+      - name: Upload visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: parkpulse-browser-audit
+          path: |
+            homepage-audit.png
+            flowboard-audit.png
+          if-no-files-found: ignore

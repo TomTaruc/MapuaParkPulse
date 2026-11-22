@@ -1,6 +1,6 @@
 # Mapúa ParkPulse — Replit-ready functional prototype
 
-This package contains the working V6.1 ParkPulse UI with its original CSS and illustrated parking map, plus the original 18-screen / 26-connection presentation board, a new interactive Flow Board, and a dedicated role-selection homepage. The three role dashboards continue to use their shared server and role-scoped browser tokens.
+This package contains the working V6.1 ParkPulse UI with its original CSS and illustrated parking map, plus the preserved legacy screens, a 20-node / 31-arrow visual Flow Board with current homepage preview, and a dedicated role-selection homepage. The three role dashboards continue to use their shared server and role-scoped browser tokens.
 
 ## Import and run
 
@@ -34,12 +34,20 @@ This package contains the working V6.1 ParkPulse UI with its original CSS and il
 
 ### File guide
 
-`server.py`: one-server Python API, shared state and routing. `portal.html`: landing page with distinct Student, Guard and Admin links. `index.html`: original three-role application with its centered TTLDLR footer and links back to the homepage and Flow Board. `FlowBoard.html`: image-based interactive Flow Board with the original 18 embedded screen captures, 26 accurately matched connector arrows, pan/zoom and working portal links. `StageBoard.html`: preserved original screen-capture presentation board with consistent header/footer. `connections.json`: original preserved connection data.
+`server.py`: one-server Python API, shared state and routing. `portal.html`: landing page with distinct Student, Guard and Admin links. `index.html`: working three-role application, centered TTLDLR footer, Home link only. `FlowBoard.html`: visual Flow Board retaining 18 embedded original captures, adding the current homepage live preview and separate Admin sign-in view, with 31 labeled arrows, pan/zoom and working portal links. `StageBoard.html`: preserved original screen-capture presentation board with consistent header/footer. `connections.json`: original preserved connection data.
+
+### Cross-role synchronization behavior
+
+The hosted demo polls one shared authenticated server state about every 650 ms. This is near-real-time polling, not instant server push, so updates may be delayed when browser tabs are backgrounded or the server is unavailable. Occupied totals count active spaces marked occupied; available totals equal capacity minus occupied. A saved Guard space change and an Admin correction both update the shared server revision and the three role views' next polls. Duplicate Guard submissions do not double-count.
+
+The Admin correction form now records physical observation times to the second, so a newly observed correction does not falsely conflict with a Guard update made earlier in the same minute.
+
+Automated checks live in `tests/test_live_sync.py` and `tests/browser_smoke.js`; GitHub Actions checks HTTP API consistency and actual browser display updates.
 
 ### QA checklist for your presentation
 
 - [ ] Homepage shows separate Student, Guard, Admin portals
-- [ ] `/flowboard` visually displays 18 screen pictures and 26 connector arrows, supports pan/zoom and opens working role portals
+- [ ] `/flowboard` visually displays 20 visual screen nodes and 31 connector arrows, supports pan/zoom and opens working role portals
 - [ ] `/legacy-board` retains the original screen artwork
 - [ ] Home and Flow Board navigation aligns right within each header
 - [ ] The exact TTLDLR group credit appears as the centered footer across all pages
