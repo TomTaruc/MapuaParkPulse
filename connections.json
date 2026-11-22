@@ -1,5 +1,33 @@
 [
   {
+    "source": "H00_home",
+    "target": "S01_student_login",
+    "kind": "navigation",
+    "label": "Choose Student portal",
+    "secondary": false
+  },
+  {
+    "source": "H00_home",
+    "target": "T01_staff_login",
+    "kind": "navigation",
+    "label": "Choose Guard portal",
+    "secondary": false
+  },
+  {
+    "source": "H00_home",
+    "target": "A00_admin_login",
+    "kind": "navigation",
+    "label": "Choose Administrator portal",
+    "secondary": false
+  },
+  {
+    "source": "A00_admin_login",
+    "target": "A01_admin_overview",
+    "kind": "navigation",
+    "label": "Admin credentials",
+    "secondary": false
+  },
+  {
     "source": "S01_student_login",
     "target": "S02_student_overview",
     "kind": "navigation",
@@ -11,13 +39,6 @@
     "target": "G01_guard_spaces",
     "kind": "navigation",
     "label": "Guard credentials",
-    "secondary": false
-  },
-  {
-    "source": "T01_staff_login",
-    "target": "A01_admin_overview",
-    "kind": "navigation",
-    "label": "Admin credentials",
     "secondary": false
   },
   {
@@ -171,7 +192,7 @@
     "source": "A09_admin_settings",
     "target": "S02_student_overview",
     "kind": "sync",
-    "label": "Facility notice → Student",
+    "label": "Capacity / facility / notice → Student",
     "secondary": false
   },
   {
@@ -179,6 +200,20 @@
     "target": "T01_staff_login",
     "kind": "sync",
     "label": "Staff access affected",
+    "secondary": false
+  },
+  {
+    "source": "A03_admin_verification",
+    "target": "G01_guard_spaces",
+    "kind": "sync",
+    "label": "Approved correction → Guard",
+    "secondary": false
+  },
+  {
+    "source": "A09_admin_settings",
+    "target": "G01_guard_spaces",
+    "kind": "sync",
+    "label": "Capacity / facility updates → Guard",
     "secondary": false
   }
 ]
