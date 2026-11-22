@@ -1,0 +1,10 @@
+entrypoint = "server.py"
+language = "python3"
+run = "python3 server.py"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[deployment]
+run = ["sh", "-c", "python3 server.py"]

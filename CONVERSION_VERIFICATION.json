@@ -1,0 +1,12 @@
+{
+  "original_html_bytes": 116150,
+  "converted_html_bytes": 116460,
+  "ui_html_before_script_identical": true,
+  "original_screens": 1,
+  "board_screens": 18,
+  "replacements": {
+    "board_routes": true,
+    "role_tokens": true,
+    "one_port": true
+  }
+}

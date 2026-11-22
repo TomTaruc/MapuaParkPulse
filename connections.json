@@ -1,0 +1,184 @@
+[
+  {
+    "source": "S01_student_login",
+    "target": "S02_student_overview",
+    "kind": "navigation",
+    "label": "Student sign-in",
+    "secondary": false
+  },
+  {
+    "source": "T01_staff_login",
+    "target": "G01_guard_spaces",
+    "kind": "navigation",
+    "label": "Guard credentials",
+    "secondary": false
+  },
+  {
+    "source": "T01_staff_login",
+    "target": "A01_admin_overview",
+    "kind": "navigation",
+    "label": "Admin credentials",
+    "secondary": false
+  },
+  {
+    "source": "G01_guard_spaces",
+    "target": "G02_guard_confirmation",
+    "kind": "navigation",
+    "label": "Choose numbered space",
+    "secondary": false
+  },
+  {
+    "source": "G01_guard_spaces",
+    "target": "G03_guard_congestion",
+    "kind": "navigation",
+    "label": "Congestion tab",
+    "secondary": false
+  },
+  {
+    "source": "G01_guard_spaces",
+    "target": "G04_guard_activity",
+    "kind": "navigation",
+    "label": "Activity tab",
+    "secondary": false
+  },
+  {
+    "source": "G02_guard_confirmation",
+    "target": "G01_guard_spaces",
+    "kind": "navigation",
+    "label": "Confirm / cancel",
+    "secondary": true
+  },
+  {
+    "source": "A01_admin_overview",
+    "target": "A02_admin_spaces",
+    "kind": "admin",
+    "label": "Space inventory",
+    "secondary": false
+  },
+  {
+    "source": "A01_admin_overview",
+    "target": "A03_admin_verification",
+    "kind": "admin",
+    "label": "Verification",
+    "secondary": false
+  },
+  {
+    "source": "A01_admin_overview",
+    "target": "A04_admin_discrepancies",
+    "kind": "admin",
+    "label": "Discrepancies",
+    "secondary": false
+  },
+  {
+    "source": "A01_admin_overview",
+    "target": "A05_admin_activity",
+    "kind": "admin",
+    "label": "Activity history",
+    "secondary": false
+  },
+  {
+    "source": "A01_admin_overview",
+    "target": "A06_admin_congestion",
+    "kind": "admin",
+    "label": "Congestion",
+    "secondary": false
+  },
+  {
+    "source": "A01_admin_overview",
+    "target": "A07_admin_analytics",
+    "kind": "admin",
+    "label": "Analytics",
+    "secondary": false
+  },
+  {
+    "source": "A01_admin_overview",
+    "target": "A08_admin_reports",
+    "kind": "admin",
+    "label": "Reports",
+    "secondary": false
+  },
+  {
+    "source": "A01_admin_overview",
+    "target": "A09_admin_settings",
+    "kind": "admin",
+    "label": "Settings",
+    "secondary": false
+  },
+  {
+    "source": "A01_admin_overview",
+    "target": "A10_admin_guards",
+    "kind": "admin",
+    "label": "Guards",
+    "secondary": false
+  },
+  {
+    "source": "A10_admin_guards",
+    "target": "A11_admin_guard_editor",
+    "kind": "navigation",
+    "label": "Add / edit Guard",
+    "secondary": false
+  },
+  {
+    "source": "G02_guard_confirmation",
+    "target": "S02_student_overview",
+    "kind": "sync",
+    "label": "Confirmed status → Student",
+    "secondary": false
+  },
+  {
+    "source": "G02_guard_confirmation",
+    "target": "A01_admin_overview",
+    "kind": "sync",
+    "label": "Confirmed status → Admin",
+    "secondary": false
+  },
+  {
+    "source": "G03_guard_congestion",
+    "target": "S02_student_overview",
+    "kind": "sync",
+    "label": "Queue report → Student",
+    "secondary": false
+  },
+  {
+    "source": "G03_guard_congestion",
+    "target": "A06_admin_congestion",
+    "kind": "sync",
+    "label": "Queue report → Admin",
+    "secondary": false
+  },
+  {
+    "source": "G04_guard_activity",
+    "target": "A04_admin_discrepancies",
+    "kind": "sync",
+    "label": "Discrepancy submitted",
+    "secondary": false
+  },
+  {
+    "source": "A03_admin_verification",
+    "target": "S02_student_overview",
+    "kind": "sync",
+    "label": "Approved correction → Student",
+    "secondary": false
+  },
+  {
+    "source": "A03_admin_verification",
+    "target": "A01_admin_overview",
+    "kind": "sync",
+    "label": "Approved correction → Admin",
+    "secondary": false
+  },
+  {
+    "source": "A09_admin_settings",
+    "target": "S02_student_overview",
+    "kind": "sync",
+    "label": "Facility notice → Student",
+    "secondary": false
+  },
+  {
+    "source": "A10_admin_guards",
+    "target": "T01_staff_login",
+    "kind": "sync",
+    "label": "Staff access affected",
+    "secondary": false
+  }
+]
