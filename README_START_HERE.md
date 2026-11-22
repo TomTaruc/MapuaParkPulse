@@ -34,13 +34,16 @@ This package contains the working V6.1 ParkPulse UI with its original CSS and il
 
 ### File guide
 
-`server.py`: one-server Python API, shared state and routing. `portal.html`: landing page with distinct Student, Guard and Admin links. `index.html`: original three-role application with its centered TTLDLR footer and links back to the homepage and Flow Board. `FlowBoard.html`: updated interactive 18-screen, 26-connection workflow directory. `StageBoard.html`: preserved original presentation board with illustrated screens and arrows. `connections.json`: original preserved connection data.
+`server.py`: one-server Python API, shared state and routing. `portal.html`: landing page with distinct Student, Guard and Admin links. `index.html`: original three-role application with its centered TTLDLR footer and links back to the homepage and Flow Board. `FlowBoard.html`: image-based interactive Flow Board with the original 18 embedded screen captures, 26 accurately matched connector arrows, pan/zoom and working portal links. `StageBoard.html`: preserved original screen-capture presentation board with consistent header/footer. `connections.json`: original preserved connection data.
 
 ### QA checklist for your presentation
 
 - [ ] Homepage shows separate Student, Guard, Admin portals
-- [ ] `/flowboard` lists all 18 screens and 26 connections and can navigate between related screens
+- [ ] `/flowboard` visually displays 18 screen pictures and 26 connector arrows, supports pan/zoom and opens working role portals
 - [ ] `/legacy-board` retains the original screen artwork
+- [ ] Home and Flow Board navigation aligns right within each header
+- [ ] The exact TTLDLR group credit appears as the centered footer across all pages
+- [ ] Student login artwork, student map and admin cards remain framed at desktop/tablet/mobile sizes
 - [ ] Student, Guard and Admin sign in individually
 - [ ] Guard marks S-12 occupied; Student / Admin occupancy updates
 - [ ] Guard marks S-12 available; all three agree
