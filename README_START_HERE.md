@@ -34,7 +34,7 @@ This package contains the working V6.1 ParkPulse UI with its original CSS and il
 
 ### File guide
 
-`server.py`: one-server Python API, shared state and routing. `portal.html`: landing page with distinct Student, Guard and Admin links. `index.html`: working three-role application, centered TTLDLR footer, Home link only. `FlowBoard.html`: visual Flow Board retaining 18 embedded original captures, adding the current homepage live preview and separate Admin sign-in view, with 31 labeled arrows, pan/zoom and working portal links. `StageBoard.html`: preserved original screen-capture presentation board with consistent header/footer. `connections.json`: original preserved connection data.
+`server.py`: one-server Python API, shared state and routing. `portal.html`: landing page with distinct Student, Guard and Admin links. `index.html`: working three-role application, centered TTLDLR footer, Home link only. `FlowBoard.html`: visual Flow Board retaining 18 embedded original captures, adding the current homepage live preview and separate Admin sign-in view, with 31 labeled arrows, pan/zoom and working portal links. `StageBoard.html`: preserved original screen-capture presentation board with consistent header/footer. `connections.json`: the current 31 directed connection records used by the interactive Flow Board.
 
 ### Cross-role synchronization behavior
 
@@ -43,6 +43,10 @@ The hosted demo polls one shared authenticated server state about every 650 ms. 
 The Admin correction form now records physical observation times to the second, so a newly observed correction does not falsely conflict with a Guard update made earlier in the same minute.
 
 Automated checks live in `tests/test_live_sync.py` and `tests/browser_smoke.js`; GitHub Actions checks HTTP API consistency and actual browser display updates.
+
+### Verified CI browser audit
+
+The November 22 audit passed at https://github.com/TomTaruc/MapuaParkPulse/actions/runs/44991740493. It exercised the live homepage and Flow Board, authenticated role views, Guard S-12 occupied update (20 → 21 occupied), and immediate Admin correction back to available (21 → 20 occupied). Screenshots are in the run's `parkpulse-browser-audit` artifact. The tests do not verify a third-party deployment.
 
 ### QA checklist for your presentation
 
