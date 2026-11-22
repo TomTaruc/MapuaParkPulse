@@ -1,13 +1,13 @@
 # Mapúa ParkPulse — Replit-ready functional prototype
 
-This package contains the working V6.1 ParkPulse UI with its original CSS and illustrated parking map, plus an unchanged 18-screen / 26-connection presentation board. The only UI-code changes are role-specific browser token storage and single-origin routing, required to run all roles from a single Replit web server.
+This package contains the working V6.1 ParkPulse UI with its original CSS and illustrated parking map, plus the original 18-screen / 26-connection presentation board, a new interactive Flow Board, and a dedicated role-selection homepage. The three role dashboards continue to use their shared server and role-scoped browser tokens.
 
 ## Import and run
 
 1. Open **https://replit.com/import** and select **ZIP**. Upload `Mapua_ParkPulse_Replit_Ready.zip`.
 2. Open the imported app. Its Run command is configured as `python3 server.py`.
-3. Click **Run**, then open **Webview/Preview**. The connection board is the first page at `/`.
-4. On the board select **Run live prototype**, or open `/student`, `/guard`, and `/admin` directly from the same Replit preview URL.
+3. Click **Run**, then open **Webview/Preview**. The role-selection homepage is at `/`.
+4. Choose **Student**, **Guard**, or **Administrator** from the homepage, or open `/student`, `/guard`, and `/admin` directly. Open `/flowboard` for the updated interactive screen/connection map, and `/legacy-board` for the preserved original presentation artwork.
 5. Keep the Replit app running while demonstrating. Open a separate tab/browser to show synchronization.
 
 ### Demo credentials (not real school accounts)
@@ -34,11 +34,13 @@ This package contains the working V6.1 ParkPulse UI with its original CSS and il
 
 ### File guide
 
-`server.py`: one-server Python API and data store. `.replit`: Run command and port. `index.html`: original three-role application with only route/session configuration adapted. `StageBoard.html`: full screen-connection board with same images/arrows plus role iframe links. `connections.json`: preserved connection data.
+`server.py`: one-server Python API, shared state and routing. `portal.html`: landing page with distinct Student, Guard and Admin links. `index.html`: original three-role application with its centered TTLDLR footer and links back to the homepage and Flow Board. `FlowBoard.html`: updated interactive 18-screen, 26-connection workflow directory. `StageBoard.html`: preserved original presentation board with illustrated screens and arrows. `connections.json`: original preserved connection data.
 
 ### QA checklist for your presentation
 
-- [ ] Board shows 18 pages and arrows
+- [ ] Homepage shows separate Student, Guard, Admin portals
+- [ ] `/flowboard` lists all 18 screens and 26 connections and can navigate between related screens
+- [ ] `/legacy-board` retains the original screen artwork
 - [ ] Student, Guard and Admin sign in individually
 - [ ] Guard marks S-12 occupied; Student / Admin occupancy updates
 - [ ] Guard marks S-12 available; all three agree
