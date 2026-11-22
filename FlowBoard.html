@@ -96,11 +96,62 @@ const CARD_W=408,CARD_H=270;
 const stage=document.getElementById('stage'),view=document.getElementById('viewport'),svg=document.getElementById('links');
 let zoom=.50,px=30,py=-8,drag=null,selected=null;const filters={navigation:true,admin:true,sync:true};
 function renderScene(){for(const sc of screens){const n=document.createElement('button');n.type='button';n.className='node';n.id='node-'+sc.id;n.style.left=sc.x+'px';n.style.top=sc.y+'px';n.setAttribute('aria-label',sc.label+' visual preview');const visual=sc.id==='H00_home'?'<div class="node-preview-home"><iframe src="/" loading="lazy" title="Current ParkPulse homepage" tabindex="-1" aria-hidden="true"></iframe></div>':'<img loading="lazy" alt="" src="'+sc.thumb+'">';n.innerHTML=visual+'<div class="node-foot"><div class="node-name"><strong>'+sc.label+'</strong><span>'+sc.id.split('_')[0]+'</span></div><div class="node-note">'+sc.note+'</div></div>';n.onclick=()=>select(sc.id);n.ondblclick=()=>openLiveForScreen(sc.id);stage.append(n)}drawLinks()}
+// Route orthogonal arrows through clear gutters; never draw across another screen.
 function route(a,b,e){
- if(e.source==='H00_home'&&e.target==='A00_admin_login')return 'M130,295 L82,295 L82,1635 L130,1635';
- if(e.source==='G02_guard_confirmation'&&e.target==='G01_guard_spaces')return 'M1494,920 L1494,974 L914,974 L914,920';const dx=Math.abs(b.x-a.x),dy=Math.abs(b.y-a.y);let sx,sy,ex,ey;
- if(dx>320&&dx>dy*.7){sx=a.x+(b.x>a.x?CARD_W:0);sy=a.y+CARD_H/2;ex=b.x+(b.x>a.x?0:CARD_W);ey=b.y+CARD_H/2;const bend=Math.max(80,Math.min(180,dx*.28));return `M${sx},${sy} C${sx+(b.x>a.x?bend:-bend)},${sy} ${ex+(b.x>a.x?-bend:bend)},${ey} ${ex},${ey}`}
- sx=a.x+CARD_W/2;sy=a.y+(b.y>a.y?CARD_H:0);ex=b.x+CARD_W/2;ey=b.y+(b.y>a.y?0:CARD_H);const t=Math.max(50,Math.min(155,dy*.28));return `M${sx},${sy} C${sx},${sy+(b.y>a.y?t:-t)} ${ex},${ey+(b.y>a.y?-t:t)} ${ex},${ey}`}
+ if(!a||!b)return '';
+ const center=n=>({x:n.x+CARD_W/2,y:n.y+CARD_H/2});
+ const ca=center(a),cb=center(b),dx=cb.x-ca.x,dy=cb.y-ca.y;
+ // Keep the home-to-Admin route outside the other role lanes.
+ if(e.source==='H00_home'&&e.target==='A00_admin_login')
+   return 'M130,295 L82,295 L82,1635 L130,1635';
+ const horizontal=Math.abs(dx)>Math.abs(dy)*.75;
+ const aSide=horizontal?(dx>=0?'right':'left'):(dy>=0?'bottom':'top');
+ const bSide=horizontal?(dx>=0?'left':'right'):(dy>=0?'top':'bottom');
+ function point(n,side,pad){
+   if(side==='left')return {x:n.x-pad,y:n.y+CARD_H/2};
+   if(side==='right')return {x:n.x+CARD_W+pad,y:n.y+CARD_H/2};
+   if(side==='top')return {x:n.x+CARD_W/2,y:n.y-pad};
+   return {x:n.x+CARD_W/2,y:n.y+CARD_H+pad};
+ }
+ const a0=point(a,aSide,0),a1=point(a,aSide,32);
+ const b0=point(b,bSide,0),b1=point(b,bSide,32);
+ const xs=[0,2480,a1.x,b1.x],ys=[0,2730,a1.y,b1.y];
+ for(const n of screens){
+   xs.push(n.x-32,n.x+CARD_W+32,n.x+CARD_W/2);
+   ys.push(n.y-32,n.y+CARD_H+32,n.y+CARD_H/2);
+ }
+ const ux=[...new Set(xs)].sort((p,q)=>p-q),uy=[...new Set(ys)].sort((p,q)=>p-q);
+ const nx=ux.length,ny=uy.length,vertex=(i,j)=>j*nx+i;
+ const blocked=(x,y)=>screens.some(n=>x>n.x-12&&x<n.x+CARD_W+12&&y>n.y-12&&y<n.y+CARD_H+12);
+ const clear=(x1,y1,x2,y2)=>screens.every(n=>{
+   if(y1===y2)return y1<=n.y-12||y1>=n.y+CARD_H+12||Math.max(x1,x2)<=n.x-12||Math.min(x1,x2)>=n.x+CARD_W+12;
+   return x1<=n.x-12||x1>=n.x+CARD_W+12||Math.max(y1,y2)<=n.y-12||Math.min(y1,y2)>=n.y+CARD_H+12;
+ });
+ const si=vertex(ux.indexOf(a1.x),uy.indexOf(a1.y)),ti=vertex(ux.indexOf(b1.x),uy.indexOf(b1.y));
+ const dist=new Map([[si*3,0]]),prev=new Map(),done=new Set(),heap=[[0,si*3]];
+ function push(item){heap.push(item);let i=heap.length-1;while(i){const p=(i-1)>>1;if(heap[p][0]<=item[0])break;heap[i]=heap[p];i=p}heap[i]=item}
+ function pop(){const first=heap[0],last=heap.pop();if(heap.length){let i=0;while(2*i+1<heap.length){let k=2*i+1;if(k+1<heap.length&&heap[k+1][0]<heap[k][0])k++;if(heap[k][0]>=last[0])break;heap[i]=heap[k];i=k}heap[i]=last}return first}
+ let finish=-1;
+ while(heap.length){
+   const [cost,state]=pop();if(done.has(state))continue;done.add(state);
+   const v=Math.floor(state/3),dir=state%3;if(v===ti){finish=state;break}
+   const i=v%nx,j=Math.floor(v/nx),x=ux[i],y=uy[j];
+   for(const [ni,nj,nd] of [[i-1,j,1],[i+1,j,1],[i,j-1,2],[i,j+1,2]]){
+     if(ni<0||ni>=nx||nj<0||nj>=ny)continue;
+     const xx=ux[ni],yy=uy[nj];
+     if(blocked(xx,yy)||!clear(x,y,xx,yy))continue;
+     const next=vertex(ni,nj)*3+nd;
+     const newCost=cost+Math.abs(xx-x)+Math.abs(yy-y)+(dir&&dir!==nd?28:0);
+     if(newCost<(dist.get(next)??Infinity)){dist.set(next,newCost);prev.set(next,state);push([newCost,next])}
+   }
+ }
+ if(finish<0)return 'M'+a0.x+','+a0.y+' L'+a1.x+','+a1.y+' L'+b1.x+','+b1.y+' L'+b0.x+','+b0.y;
+ const points=[];for(let s=finish;s!==undefined;s=prev.get(s)){const v=Math.floor(s/3);points.push({x:ux[v%nx],y:uy[Math.floor(v/nx)]})}points.reverse();
+ const whole=[a0,...points,b0],simple=[];
+ for(const p of whole){if(simple.length&&simple.at(-1).x===p.x&&simple.at(-1).y===p.y)continue;
+   simple.push(p);while(simple.length>=3){const [p1,p2,p3]=simple.slice(-3);if((p1.x===p2.x&&p2.x===p3.x)||(p1.y===p2.y&&p2.y===p3.y))simple.splice(-2,1);else break}}
+ return simple.map((p,i)=>(i?'L':'M')+p.x+','+p.y).join(' ');
+}
 function drawLinks(){let html='<defs><marker id="arrowNav" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L9 4.5 L0 9 z" fill="#383838"/></marker><marker id="arrowAdmin" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#888"/></marker><marker id="arrowSync" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#c8102e"/></marker></defs>';
  for(const e of edges){const a=byId[e.source],b=byId[e.target],related=!selected||selected===e.source||selected===e.target;let klass=e.kind+(!filters[e.kind]?' hidden':'')+(!related?' dim':'');html+='<path class="edge '+klass+'" d="'+route(a,b,e)+'" marker-end="url(#'+({navigation:'arrowNav',admin:'arrowAdmin',sync:'arrowSync'}[e.kind])+')"><title>'+e.label+'</title></path>'}svg.innerHTML=html;}
 function transform(){stage.style.transform='translate('+px+'px,'+py+'px) scale('+zoom+')';document.getElementById('zlabel').textContent=Math.round(zoom*100)+'%'}
